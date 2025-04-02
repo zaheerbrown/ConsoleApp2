@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Media;
 using System.IO;
+using System.Collections.Generic;
 
 public class CyberGuardian
 {
     public static void Main(string[] args)
     {
         Console.Clear();
-        PlayVoiceGreeting("welcome.wav");
+        PlayVoiceGreeting("C:\\Users\\RC_Student_lab\\source\\repos\\progpt1\\progaudio.wav");
         DisplayBanner();
         PrintSeparator();
         GreetUser();
@@ -18,7 +19,7 @@ public class CyberGuardian
     static void PlayVoiceGreeting(string audioFilePath)
     {
         if (File.Exists(audioFilePath))
-        { 
+        {
             try
             {
                 using (SoundPlayer player = new SoundPlayer(audioFilePath))
@@ -51,7 +52,7 @@ public class CyberGuardian
  / ___|  ___| |_ _   _  __| | __ _| |_ ___
  \___ \ / _ \ __| | | |/ _` |/ _` | __/ _ \
   ___) |  __/ |_| |_| | (_| | (_| | ||  __/
- |____/ \___|\__|\__,_|\__,_|\__,_|\__\___|
+ |____/ \___|\__|\__,_|\__,_|\__,_|\__\___|  
                                            ");
         Console.ResetColor();
     }
@@ -70,66 +71,48 @@ public class CyberGuardian
         Console.ResetColor();
     }
 
-    static void DisplayQuestionMenu()
-    {
-        Console.WriteLine("\nSelect a cybersecurity topic:");
-        Console.WriteLine("1. How are you?");
-        Console.WriteLine("2. What's your purpose?");
-        Console.WriteLine("3. Password safety tips");
-        Console.WriteLine("4. Recognizing phishing attacks");
-        Console.WriteLine("5. Protecting against malware");
-        Console.WriteLine("6. Safe browsing practices");
-        Console.WriteLine("7. Enhancing online privacy");
-        Console.WriteLine("8. Social media security tips");
-        Console.WriteLine("9. Exit");
-        Console.Write("Enter your choice (1-9): ");
-    }
-
     static void HandleUserQuery(string userInput)
     {
-        switch (userInput.Trim())
+        // List of keywords and corresponding responses
+        var responses = new List<(string keyword, string response)>
         {
-            case "1":
+            ("how are you", "I'm great! How can I assist you today?"),
+            ("what's your purpose", "I help you stay safe online with cybersecurity tips!"),
+            ("password safety", "Use strong, unique passwords. A password manager can help!"),
+            ("phishing", "Avoid clicking suspicious links and never share credentials."),
+            ("malware", "Keep your system updated and avoid untrusted downloads."),
+            ("safe browsing", "Check for HTTPS, avoid unknown links, and use antivirus software."),
+            ("online privacy", "Enable two-factor authentication and limit personal data sharing."),
+            ("social media security", "Use strong passwords and review your social media privacy settings."),
+            ("exit", "Goodbye! Stay cyber-safe.")
+        };
+
+        bool responseFound = false;
+
+        // Loop through each keyword/response pair and check if the input contains the keyword
+        foreach (var (keyword, response) in responses)
+        {
+            if (userInput.ToLower().Contains(keyword))
+            {
                 PlayResponseSound();
-                Console.WriteLine("I'm great! How can I assist you today?");
+                Console.WriteLine(response);
+
+                // Special case for exit to quit the program
+                if (keyword == "exit")
+                {
+                    PlayVoiceGreeting("goodbye.wav");
+                    Environment.Exit(0);
+                }
+
+                responseFound = true;
                 break;
-            case "2":
-                PlayResponseSound();
-                Console.WriteLine("I help you stay safe online with cybersecurity tips!");
-                break;
-            case "3":
-                PlayResponseSound();
-                Console.WriteLine("Use strong, unique passwords. A password manager can help!");
-                break;
-            case "4":
-                PlayResponseSound();
-                Console.WriteLine("Avoid clicking suspicious links and never share credentials.");
-                break;
-            case "5":
-                PlayResponseSound();
-                Console.WriteLine("Keep your system updated and avoid untrusted downloads.");
-                break;
-            case "6":
-                PlayResponseSound();
-                Console.WriteLine("Check for HTTPS, avoid unknown links, and use antivirus software.");
-                break;
-            case "7":
-                PlayResponseSound();
-                Console.WriteLine("Enable two-factor authentication and limit personal data sharing.");
-                break;
-            case "8":
-                PlayResponseSound();
-                Console.WriteLine("Use strong passwords and review your social media privacy settings.");
-                break;
-            case "9":
-                PlayVoiceGreeting("goodbye.wav");
-                Console.WriteLine("Goodbye! Stay cyber-safe.");
-                Environment.Exit(0);
-                break;
-            default:
-                Console.Beep(300, 500);
-                Console.WriteLine("Invalid input. Please enter a number between 1 and 9.");
-                break;
+            }
+        }
+
+        if (!responseFound)
+        {
+            Console.Beep(300, 500);
+            Console.WriteLine("Invalid input. Please enter a valid query.");
         }
     }
 
@@ -137,12 +120,12 @@ public class CyberGuardian
     {
         while (true)
         {
-            DisplayQuestionMenu();
+            Console.Write("\nAsk me something about cybersecurity (or type 'exit' to quit): ");
             string userInput = Console.ReadLine();
 
             if (!string.IsNullOrWhiteSpace(userInput))
             {
-                HandleUserQuery(userInput);
+                HandleUserQuery(userInput.Trim());
             }
             else
             {
