@@ -1,70 +1,43 @@
-test_suite:
-  name: CyberGuardian Unit Tests
-  description: Unit tests for CyberGuardian class functionality
-  tests:
-    - name: TestPlayVoiceGreeting
-      description: Test that the PlayVoiceGreeting method plays an audio file when the file exists
-      method: PlayVoiceGreeting
-      parameters:
-        audioFilePath: "C:\\Users\\RC_Student_lab\\source\\repos\\progpt1\\progaudio.wav"
-      expected_result:
-        outcome: "success"
-        message: "The audio file should play successfully if the file exists."
-      conditions:
-        file_exists: true
+name: .NET Build and Test
 
-    - name: TestMissingAudioFile
-      description: Test the case where the audio file is missing
-      method: PlayVoiceGreeting
-      parameters:
-        audioFilePath: "C:\\path\\to\\missing_audio.wav"
-      expected_result:
-        outcome: "failure"
-        message: "Should print 'Missing audio file' when the file doesn't exist."
-      conditions:
-        file_exists: false
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
-    - name: TestGreetUser
-      description: Test that the user is greeted correctly after entering their name
-      method: GreetUser
-      expected_result:
-        outcome: "success"
-        message: "The program should greet the user with their name."
-      conditions:
-        user_input: "John"
+jobs:
+  build:
+    runs-on: ubuntu-latest  # You can choose windows-latest if you want to run on Windows
 
-    - name: TestHandleUserQueryWithValidInput
-      description: Test that the program responds correctly to valid queries
-      method: HandleUserQuery
-      parameters:
-        userInput: "how are you"
-      expected_result:
-        outcome: "success"
-        message: "Program should respond with a greeting when asked 'how are you'."
+    steps:
+      # Check out the code from your repository
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    - name: TestHandleUserQueryWithInvalidInput
-      description: Test that the program responds correctly to invalid queries
-      method: HandleUserQuery
-      parameters:
-        userInput: "unknown query"
-      expected_result:
-        outcome: "failure"
-        message: "The program should respond with 'Invalid input' when an unknown query is entered."
+      # Set up .NET SDK
+      - name: Set up .NET SDK
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: '6.0'  # Set to the appropriate .NET version
 
-    - name: TestChatLoopExit
-      description: Test that the program exits when 'exit' is typed by the user
-      method: HandleUserQuery
-      parameters:
-        userInput: "exit"
-      expected_result:
-        outcome: "exit"
-        message: "The program should exit when 'exit' is entered."
-      conditions:
-        program_should_exit: true
+      # Restore the NuGet packages
+      - name: Restore dependencies
+        run: dotnet restore
 
-    - name: TestPrintSeparator
-      description: Test that the PrintSeparator method correctly prints a separator
-      method: PrintSeparator
-      expected_result:
-        outcome: "success"
-        message: "The program should print a separator line."
+      # Build the project
+      - name: Build the project
+        run: dotnet build --configuration Release
+
+      # Run tests (optional, but highly recommended for CI)
+      - name: Run tests
+        run: dotnet test --configuration Release --no-build
+
+      # (Optional) Publish the build artifacts to an output directory (e.g., for deployment)
+      - name: Publish output
+        run: dotnet publish --configuration Release --output ./publish
+
+
+
