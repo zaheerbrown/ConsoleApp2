@@ -1,0 +1,70 @@
+test_suite:
+  name: CyberGuardian Unit Tests
+  description: Unit tests for CyberGuardian class functionality
+  tests:
+    - name: TestPlayVoiceGreeting
+      description: Test that the PlayVoiceGreeting method plays an audio file when the file exists
+      method: PlayVoiceGreeting
+      parameters:
+        audioFilePath: "C:\\Users\\RC_Student_lab\\source\\repos\\progpt1\\progaudio.wav"
+      expected_result:
+        outcome: "success"
+        message: "The audio file should play successfully if the file exists."
+      conditions:
+        file_exists: true
+
+    - name: TestMissingAudioFile
+      description: Test the case where the audio file is missing
+      method: PlayVoiceGreeting
+      parameters:
+        audioFilePath: "C:\\path\\to\\missing_audio.wav"
+      expected_result:
+        outcome: "failure"
+        message: "Should print 'Missing audio file' when the file doesn't exist."
+      conditions:
+        file_exists: false
+
+    - name: TestGreetUser
+      description: Test that the user is greeted correctly after entering their name
+      method: GreetUser
+      expected_result:
+        outcome: "success"
+        message: "The program should greet the user with their name."
+      conditions:
+        user_input: "John"
+
+    - name: TestHandleUserQueryWithValidInput
+      description: Test that the program responds correctly to valid queries
+      method: HandleUserQuery
+      parameters:
+        userInput: "how are you"
+      expected_result:
+        outcome: "success"
+        message: "Program should respond with a greeting when asked 'how are you'."
+
+    - name: TestHandleUserQueryWithInvalidInput
+      description: Test that the program responds correctly to invalid queries
+      method: HandleUserQuery
+      parameters:
+        userInput: "unknown query"
+      expected_result:
+        outcome: "failure"
+        message: "The program should respond with 'Invalid input' when an unknown query is entered."
+
+    - name: TestChatLoopExit
+      description: Test that the program exits when 'exit' is typed by the user
+      method: HandleUserQuery
+      parameters:
+        userInput: "exit"
+      expected_result:
+        outcome: "exit"
+        message: "The program should exit when 'exit' is entered."
+      conditions:
+        program_should_exit: true
+
+    - name: TestPrintSeparator
+      description: Test that the PrintSeparator method correctly prints a separator
+      method: PrintSeparator
+      expected_result:
+        outcome: "success"
+        message: "The program should print a separator line."
