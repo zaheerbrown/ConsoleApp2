@@ -1,0 +1,71 @@
+# test.yml
+# This file contains test cases for the CyberGuardian C# application.
+
+# Tests are organized into scenarios.  Each scenario describes a user interaction
+# with the chatbot and the expected behavior.
+#
+# A scenario consists of:
+# - name: A descriptive name for the test scenario.
+# - user_input: The text the user enters.
+# - expected_response: The chatbot's expected response.  This can be a full
+#                      string or a fragment (substring) that must be present
+#                      in the actual response.
+# - check_color: (Optional) If true, the test will also check that the
+#                response is printed in the expected color (Green or Red).
+#                If omitted, color is not checked.
+
+scenarios:
+  - name: Greeting and Name Input
+    user_input: "John"
+    expected_response: "Hello, John! Let's keep you safe online."
+    check_color: true
+
+  - name: Basic Question - password
+    user_input: "What about password safety?"
+    expected_response: "Use strong, unique passwords"
+    check_color: true
+
+  - name: Basic Question - scam
+    user_input: "Tell me about scam"
+    expected_response: "Be cautious of unsolicited emails"
+    check_color: true
+
+  - name: Basic Question - privacy
+    user_input: "How about online privacy"
+    expected_response: "Enable two-factor authentication"
+    check_color: true
+
+  - name: Exit
+    user_input: "exit"
+    expected_response: "Goodbye! Stay cyber-safe."
+    check_color: true
+
+  - name: Invalid Input
+    user_input: "blahblahblah"
+    expected_response: "I'm not sure I understand"
+    check_color: false # Color is Red, we don't check for red.
+
+  - name: Sentiment - worried
+    user_input: "I'm worried about my online security."
+    expected_response: "It's completely understandable to feel that way."
+    check_color: true
+
+  - name: Sentiment - curious
+    user_input: "I'm curious about phishing."
+    expected_response: "That's great that you're curious!"
+    check_color: true
+
+  - name: Sentiment - frustrated
+    user_input: "I'm frustrated by all this."
+    expected_response: "I understand this can be frustrating."
+    check_color: true
+
+  - name: Thank you
+    user_input: "thank you"
+    expected_response: "You're welcome!"
+    check_color: true
+
+  - name: Memory recall
+    user_input: "do you remember my interest"
+    expected_response: "Yes, I remember you are interested in"
+    check_color: true
