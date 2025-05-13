@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 name: .NET Build and Test
 
 on:
@@ -38,5 +39,51 @@ jobs:
       # (Optional) Publish the build artifacts to an output directory (e.g., for deployment)
       - name: Publish output
         run: dotnet publish --configuration Release --output ./publish
+=======
+tests:
+  - description: "Test greeting and response to 'how are you'"
+    input: "how are you"
+    expected_output: "I'm great! How can I assist you today?"
+    
+  - description: "Test response to 'what's your purpose'"
+    input: "what's your purpose"
+    expected_output: "I help you stay safe online with cybersecurity tips!"
+    
+  - description: "Test response to 'password safety'"
+    input: "password safety"
+    expected_output: "Use strong, unique passwords. A password manager can help!"
+    
+  - description: "Test response to 'phishing'"
+    input: "phishing"
+    expected_output: "Avoid clicking suspicious links and never share credentials."
+    
+  - description: "Test response to 'malware'"
+    input: "malware"
+    expected_output: "Keep your system updated and avoid untrusted downloads."
+    
+  - description: "Test response to 'safe browsing'"
+    input: "safe browsing"
+    expected_output: "Check for HTTPS, avoid unknown links, and use antivirus software."
+    
+  - description: "Test response to 'online privacy'"
+    input: "online privacy"
+    expected_output: "Enable two-factor authentication and limit personal data sharing."
+    
+  - description: "Test response to 'social media security'"
+    input: "social media security"
+    expected_output: "Use strong passwords and review your social media privacy settings."
+    
+  - description: "Test exit command"
+    input: "exit"
+    expected_output: "Goodbye! Stay cyber-safe."
+    exit: true
+
+  - description: "Test invalid input"
+    input: "unknown query"
+    expected_output: "Invalid input. Please enter a valid query."
+    beep: true
+
+
+>>>>>>> 0cd65e8733ec0bee650fd4bebb304b5b69f8fa10
 
 
